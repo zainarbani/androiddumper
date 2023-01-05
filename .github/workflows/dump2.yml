@@ -1,0 +1,39 @@
+# Using Dumpyara
+
+name: ROM Dumper
+on:
+  workflow_dispatch:
+    inputs:
+      ROM_URL:
+        description: "ROM_URL"
+        required: true
+        default: "https://bigota.d.miui.com/V14.0.22.12.26.DEV/miui_ARES_V14.0.22.12.26.DEV_77dab78db5_13.0.zip"
+      GITHUB_ORG:
+        description: "GITHUB_ORG"
+        required: true
+        default: "RandomPush"
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare Dumpyara
+        run: |
+          sudo apt update &> /dev/null
+          sudo apt -y install curl python3 wget &> /dev/null
+          git config --global user.name "bot"
+          git config --global user.email ""
+          git clone -b master https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
+          cd dumpyara
+          chmod +x setup.sh && chmod +x dumpyara.sh
+          ORGH=${{github.event.inputs.GITHUB_ORG}}
+          sed -i "s|ORG=AndroidDumps|ORG=$ORGH|g" dumpyara.sh
+          bash setup.sh &> /dev/null
+      - name: Download & Dump ROM
+        run: |
+          cd dumpyara
+          bash dumpyara.sh ${{github.event.inputs.ROM_URL}} $API_TOKEN_GITHUB
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
