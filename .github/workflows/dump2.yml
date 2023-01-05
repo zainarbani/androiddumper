@@ -1,6 +1,6 @@
 # Using Dumpyara
 
-name: ROM Dumper
+name: ROM Dumper 2
 on:
   workflow_dispatch:
     inputs:
