@@ -37,6 +37,6 @@ jobs:
       - name: Download & Dump ROM
         run: |
           cd dumpyara
-          bash dumpyara.sh \"${{github.event.inputs.ROM_URL}}\" $API_TOKEN_GITHUB
+          bash dumpyara.sh "${{github.event.inputs.ROM_URL}}" $API_TOKEN_GITHUB
         env:
           API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
