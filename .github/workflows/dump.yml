@@ -28,7 +28,7 @@ jobs:
           cargo install otadump
           git config --global user.name "bot"
           git config --global user.email ""
-          git clone -b test https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
+          git clone -b main https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
           cd dumpyara
           chmod +x setup.sh && chmod +x dumpyara.sh
           ORGH=${{github.event.inputs.GITHUB_ORG}}
