@@ -23,9 +23,10 @@ jobs:
         run: |
           sudo apt update &> /dev/null
           sudo apt -y install curl python3 wget protobuf-compiler &> /dev/null
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          rustup update
-          cargo install otadump
+          curl -sS https://raw.githubusercontent.com/crazystylus/otadump/mainline/install.sh | bash
+          #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          #rustup update
+          #cargo install otadump
           git config --global user.name "bot"
           git config --global user.email ""
           git clone -b test https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
