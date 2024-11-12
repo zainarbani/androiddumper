@@ -1,22 +1,22 @@
 # Using Dumpyara & BuildJet
 
-name: ROM Dumper
+name: ROM Dumper NT
 on:
   workflow_dispatch:
     inputs:
-      ROM_URL:
+      ROM_URL1:
         description: "ROM_URL1"
         required: true
         default: ""
-      ROM_URL:
+      ROM_URL2:
         description: "ROM_URL2"
         required: true
         default: ""
-      ROM_URL:
+      ROM_URL3:
         description: "ROM_URL3"
         required: true
         default: ""
-      ROM_URL:
+      ROM_URL4:
         description: "ROM_URL4"
         required: true
         default: ""
