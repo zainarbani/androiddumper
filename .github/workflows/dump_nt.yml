@@ -1,0 +1,58 @@
+# Using Dumpyara & BuildJet
+
+name: ROM Dumper
+on:
+  workflow_dispatch:
+    inputs:
+      ROM_URL:
+        description: "ROM_URL1"
+        required: true
+        default: ""
+      ROM_URL:
+        description: "ROM_URL2"
+        required: true
+        default: ""
+      ROM_URL:
+        description: "ROM_URL3"
+        required: true
+        default: ""
+      ROM_URL:
+        description: "ROM_URL4"
+        required: true
+        default: ""
+      GITHUB_ORG:
+        description: "GITHUB_ORG"
+        required: true
+        default: "RandomPush"
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: buildjet-8vcpu-ubuntu-2004
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare Dumpyara
+        run: |
+          sudo apt update &> /dev/null
+          sudo apt -y install curl python3 wget aria2 &> /dev/null
+          curl -sS https://raw.githubusercontent.com/crazystylus/otadump/mainline/install.sh | bash
+          git config --global user.name "bot"
+          git config --global user.email ""
+          git config --global advice.refSyntax false
+          git clone -b test https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
+          cd dumpyara
+          chmod +x setup.sh && chmod +x dumpyara.sh
+          ORGH=${{github.event.inputs.GITHUB_ORG}}
+          sed -i "s|ORG=AndroidDumps|ORG=$ORGH|g" dumpyara.sh
+          bash setup.sh &> /dev/null
+      - name: Download & Dump ROM
+        run: |
+          aria2c "${{github.event.inputs.ROM_URL1}}"
+          aria2c "${{github.event.inputs.ROM_URL2}}"
+          aria2c "${{github.event.inputs.ROM_URL3}}"
+          aria2c "${{github.event.inputs.ROM_URL4}}"
+          cat .*logical.7z.* > rom.7z
+          cd dumpyara
+          bash dumpyara.sh ../rom.7z $GH_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
