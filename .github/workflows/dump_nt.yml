@@ -51,7 +51,7 @@ jobs:
           aria2c "${{github.event.inputs.ROM_URL2}}"
           aria2c "${{github.event.inputs.ROM_URL3}}"
           aria2c "${{github.event.inputs.ROM_URL4}}"
-          cat .*logical.7z.* > rom.7z
+          cat *logical.7z.* > rom.7z
           cd dumpyara
           bash dumpyara.sh ../rom.7z $GH_TOKEN
         env:
