@@ -36,7 +36,7 @@ jobs:
       - name: Download & Dump ROM
         run: |
           cd dumpyara
-          wget -O rom.zip "${{github.event.inputs.ROM_URL}}"
-          bash dumpyara.sh rom.zip $GH_TOKEN
+          #wget -O rom.zip "${{github.event.inputs.ROM_URL}}"
+          bash dumpyara.sh "${{github.event.inputs.ROM_URL}}" $GH_TOKEN
         env:
           GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
