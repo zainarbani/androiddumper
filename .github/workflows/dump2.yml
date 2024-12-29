@@ -1,6 +1,6 @@
-# Using Dumpyara
+# Using Dumpyara & BuildJet
 
-name: ROM Dumper 2
+name: ROM Dumper
 on:
   workflow_dispatch:
     inputs:
@@ -15,19 +15,18 @@ on:
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: ubuntu-latest
+    runs-on: buildjet-8vcpu-ubuntu-2004
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare Dumpyara
         run: |
           sudo apt update &> /dev/null
-          sudo apt -y install curl python3 wget protobuf-compiler &> /dev/null
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          rustup update
-          cargo install otadump
+          sudo apt -y install curl python3 wget aria2 &> /dev/null
+          curl -sS https://raw.githubusercontent.com/crazystylus/otadump/mainline/install.sh | bash
           git config --global user.name "bot"
           git config --global user.email ""
+          git config --global advice.refSyntax false
           git clone -b test https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
           cd dumpyara
           chmod +x setup.sh && chmod +x dumpyara.sh
@@ -37,6 +36,9 @@ jobs:
       - name: Download & Dump ROM
         run: |
           cd dumpyara
-          bash dumpyara.sh "${{github.event.inputs.ROM_URL}}" $API_TOKEN_GITHUB
+          aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
+          7z e rom.zip *.img && mv *.img system.img
+          rm rom.zip && 7z a rom.zip system.img
+          bash dumpyara.sh rom.zip $GH_TOKEN
         env:
-          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
+          GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
