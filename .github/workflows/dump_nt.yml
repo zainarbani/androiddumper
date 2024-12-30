@@ -47,7 +47,10 @@ jobs:
           bash setup.sh &> /dev/null
       - name: Download & Dump ROM
         run: |
-          aria2c -Z "${{github.event.inputs.ROM_URL1}}" "${{github.event.inputs.ROM_URL2}}" "${{github.event.inputs.ROM_URL3}}" "${{github.event.inputs.ROM_URL4}}"
+          aria2c -Z ${{github.event.inputs.ROM_URL1}} \
+           ${{github.event.inputs.ROM_URL2}} \
+           ${{github.event.inputs.ROM_URL3}} \
+           ${{github.event.inputs.ROM_URL4}}
           cat *logical.7z.* > rom.7z
           cd dumpyara
           bash dumpyara.sh ../rom.7z $GH_TOKEN
