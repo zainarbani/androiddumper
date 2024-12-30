@@ -19,7 +19,7 @@ on:
       ROM_URL4:
         description: "ROM_URL4"
         required: true
-        default: ""
+        default: "none"
       GITHUB_ORG:
         description: "GITHUB_ORG"
         required: true
@@ -50,7 +50,7 @@ jobs:
           aria2c "${{github.event.inputs.ROM_URL1}}"
           aria2c "${{github.event.inputs.ROM_URL2}}"
           aria2c "${{github.event.inputs.ROM_URL3}}"
-          if [ ${{github.event.inputs.ROM_URL4}} ]; then
+          if [ "${{github.event.inputs.ROM_URL4}}" != "none" ]; then
            aria2c "${{github.event.inputs.ROM_URL4}}"
           fi
           cat *logical.7z.* > rom.7z
