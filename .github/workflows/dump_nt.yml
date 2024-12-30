@@ -18,7 +18,7 @@ on:
         default: ""
       ROM_URL4:
         description: "ROM_URL4"
-        required: true
+        required: false
         default: ""
       GITHUB_ORG:
         description: "GITHUB_ORG"
