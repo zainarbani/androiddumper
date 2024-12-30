@@ -19,7 +19,7 @@ on:
       ROM_URL4:
         description: "ROM_URL4"
         required: true
-        default: "none"
+        default: ""
       GITHUB_ORG:
         description: "GITHUB_ORG"
         required: true
@@ -47,12 +47,10 @@ jobs:
           bash setup.sh &> /dev/null
       - name: Download & Dump ROM
         run: |
-          aria2c "${{github.event.inputs.ROM_URL1}}"
-          aria2c "${{github.event.inputs.ROM_URL2}}"
-          aria2c "${{github.event.inputs.ROM_URL3}}"
-          if [ "${{github.event.inputs.ROM_URL4}}" != "none" ]; then
-           aria2c "${{github.event.inputs.ROM_URL4}}"
-          fi
+          aria2c -Z "${{github.event.inputs.ROM_URL1}}" \
+           "${{github.event.inputs.ROM_URL2}}" \
+           "${{github.event.inputs.ROM_URL3}}" \
+           "${{github.event.inputs.ROM_URL4}}"
           cat *logical.7z.* > rom.7z
           cd dumpyara
           bash dumpyara.sh ../rom.7z $GH_TOKEN
