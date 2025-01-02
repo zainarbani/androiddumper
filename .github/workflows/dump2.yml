@@ -37,6 +37,7 @@ jobs:
         run: |
           cd dumpyara
           aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
+          7z l rom.zip
           filen=$(7z l -ba rom.zip | grep -vF 'D....' | grep -oP '\S+$' | xargs basename)
           7z rn rom.zip $filen system.img
           bash dumpyara.sh rom.zip $GH_TOKEN
