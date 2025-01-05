@@ -38,9 +38,15 @@ jobs:
           cd dumpyara
           #aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
           curl 'https://file9.gofile.io/download/web/fad9caf2-badf-435d-8042-5a6c392c2ecf/EternityROM_v4.0_OneUI_6.1.1.zip' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br, zstd' -H 'Referer: https://gofile.io/' -H 'Connection: keep-alive' -H 'Cookie: accountToken=RoFXZcfMDMHO2CQ0WU3iEdkG1TX5vsPo' -H 'Upgrade-Insecure-Requests: 1' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-site' -H 'Sec-Fetch-User: ?1' -H 'Priority: u=0, i' --output rom.zip
-          7z l rom.zip
-          filen=$(7z l -ba rom.zip | grep -vF 'D....' | grep -oP '\S+$')
-          7z rn rom.zip $filen AP_system.tar
+          #7z l rom.zip
+          #filen=$(7z l -ba rom.zip | grep -vF 'D....' | grep -oP '\S+$')
+          #7z rn rom.zip $filen AP_system.tar
+          7z rn rom.zip images/system.new.dat.br system.new.dat.br
+          7z rn rom.zip images/system.patch.dat system.patch.dat
+          7z rn rom.zip images/system.transfer.list system.transfer.list
+          7z rn rom.zip images/product.new.dat.br product.new.dat.br
+          7z rn rom.zip images/product.patch.dat product.patch.dat
+          7z rn rom.zip images/product.transfer.list product.transfer.list
           bash dumpyara.sh rom.zip $GH_TOKEN
         env:
           GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
