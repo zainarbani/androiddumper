@@ -36,13 +36,15 @@ jobs:
       - name: Download & Dump ROM
         run: |
           cd dumpyara
-          megadl --version
-          megadl "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
-          7z a tm.7z super.bin
+          #megadl --version
+          wget http://bashupload.com/DTTzx/megatools
+          chmod +x megatools
+          ./megatools dl --path super.img "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
+          7z a tm.7z super.img
           #aria2c -o hhh.rar https://projects.umidigi.com/download/2024_12_25_09_41_23/UMIDIGI_Note_90C_V1.0_20241219_user.rar
           curl bashupload.com -T tm.7z
           filen=$(7z l -ba tm.7z | grep -vF 'D....' | grep -oP '\S+$')
-          7z rn tm.7z $filen super.img
+          #7z rn tm.7z $filen super.img
           #aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
           #curl 'https://file9.gofile.io/download/web/fad9caf2-badf-435d-8042-5a6c392c2ecf/EternityROM_v4.0_OneUI_6.1.1.zip' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br, zstd' -H 'Referer: https://gofile.io/' -H 'Connection: keep-alive' -H 'Cookie: accountToken=RoFXZcfMDMHO2CQ0WU3iEdkG1TX5vsPo' -H 'Upgrade-Insecure-Requests: 1' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-site' -H 'Sec-Fetch-User: ?1' -H 'Priority: u=0, i' --output rom.zip
           7z l rom.zip
