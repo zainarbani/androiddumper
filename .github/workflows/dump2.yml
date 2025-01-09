@@ -39,7 +39,8 @@ jobs:
           #megadl --version
           wget http://bashupload.com/DTTzx/megatools
           chmod +x megatools
-          ./megatools dl --path super.img "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
+          ./megatools dl "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
+          mv super.bin super.img
           7z a tm.7z super.img
           #aria2c -o hhh.rar https://projects.umidigi.com/download/2024_12_25_09_41_23/UMIDIGI_Note_90C_V1.0_20241219_user.rar
           curl bashupload.com -T tm.7z
