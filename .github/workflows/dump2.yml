@@ -36,8 +36,8 @@ jobs:
       - name: Download & Dump ROM
         run: |
           cd dumpyara
-          megadl --path super.img https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ
-          7z a tm.7z super.img
+          megadl "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
+          7z a tm.7z super.bin
           #aria2c -o hhh.rar https://projects.umidigi.com/download/2024_12_25_09_41_23/UMIDIGI_Note_90C_V1.0_20241219_user.rar
           curl bashupload.com -T tm.7z
           #aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
