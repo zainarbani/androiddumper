@@ -33,10 +33,13 @@ jobs:
           ORGH=${{github.event.inputs.GITHUB_ORG}}
           sed -i "s|ORG=AndroidDumps|ORG=$ORGH|g" dumpyara.sh
           bash setup.sh &> /dev/null
+          python3 -m pip3 install git+https://github.com/ananjaser1211/samloader.git
       - name: Download & Dump ROM
         run: |
           cd dumpyara
           #wget -O rom.zip "${{github.event.inputs.ROM_URL}}"
-          bash dumpyara.sh "${{github.event.inputs.ROM_URL}}" $GH_TOKEN
+          #bash dumpyara.sh "${{github.event.inputs.ROM_URL}}" $GH_TOKEN
+          samloader -m SM-A546B -r EUX -i 350756481692245 download -o ota.zip
+          bash dumpyara.sh ota.zip $GH_TOKEN
         env:
           GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
