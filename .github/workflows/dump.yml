@@ -33,7 +33,7 @@ jobs:
           ORGH=${{github.event.inputs.GITHUB_ORG}}
           sed -i "s|ORG=AndroidDumps|ORG=$ORGH|g" dumpyara.sh
           bash setup.sh &> /dev/null
-          python3 -m pip3 install git+https://github.com/ananjaser1211/samloader.git
+          python3 -m pip install git+https://github.com/ananjaser1211/samloader.git
       - name: Download & Dump ROM
         run: |
           cd dumpyara
