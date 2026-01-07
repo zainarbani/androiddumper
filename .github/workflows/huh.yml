@@ -1,0 +1,47 @@
+name: ROM Extract
+
+on:
+  workflow_dispatch:
+    inputs:
+      ROM_URL:
+        description: 'ROM_URL'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+    - name: Prepare Env
+      run: |
+        sudo apt update  &> /dev/null
+        sudo apt -y install aria2 python3 p7zip-full tar liblz4-tool &> /dev/null
+        aria2c https://github.com/retired64/mediafire_py/releases/download/v1.0.0/mediafire-py-linux-x64.zip
+        unzip mediafire-py-linux-x64.zip
+        chmod +x mediafire-py
+        echo "BUILD_DATE=$(date "+%Y%m%d%H%M")" >> $GITHUB_ENV
+
+    - name: Download ROM
+      run: |
+        ./mediafire-py "${{ github.event.inputs.ROM_URL }}"
+        mkdir out
+        mv *.rar out/
+        
+    - name: Repack ROM
+      run: |
+        7z a -mmt8 -mx6 -v1g out/ota.7z out/*.rar
+        rm -rf out/*.rar
+
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: out/*
+        artifactErrorsFailBuild: true
+        name: ${{ env.BUILD_DATE }}
+        tag: ${{ env.BUILD_DATE }}
+        body: ok
+        token: ${{ secrets.GITHUB_TOKEN }}
