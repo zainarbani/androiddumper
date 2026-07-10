@@ -28,7 +28,7 @@ jobs:
           git config --global advice.refSyntax false
       - name: Download & Dump ROM
         run: |
-          aria2c -o fw.tgz "https://cdnorg.d.miui.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
+          aria2c -o fw.tgz "https://bn.d.miui.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
           #curl bashupload.com -T tm.7z
           tar -tf fw.tgz
           
