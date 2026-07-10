@@ -28,7 +28,10 @@ jobs:
           git config --global advice.refSyntax false
       - name: Download & Dump ROM
         run: |
-          aria2c -o fw.tgz "https://bn.d.miui.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
+          aria2c -o fw.tgz "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
           #curl bashupload.com -T tm.7z
-          tar -tf fw.tgz
+          tar -zxvf fw.tgz dali_images_OS3.0.302.0.WONCNXM_16.0/images/boot.img dali_images_OS3.0.302.0.WONCNXM_16.0/images/vendor_boot.img
+          tar -cvf boot_dali.tar -C dali_images_OS3.0.302.0.WONCNXM_16.0/images/ boot.img vendor_boot.img
+          curl bashupload.app -T boot_dali.tar
+          
           
