@@ -7,7 +7,7 @@ on:
       ROM_URL:
         description: "ROM_URL"
         required: true
-        default: "https://bigota.d.miui.com/V14.0.22.12.26.DEV/miui_ARES_V14.0.22.12.26.DEV_77dab78db5_13.0.zip"
+        default: "https://cdnorg.d.miui.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
       GITHUB_ORG:
         description: "GITHUB_ORG"
         required: true
@@ -15,48 +15,20 @@ on:
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: buildjet-8vcpu-ubuntu-2004
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare Dumpyara
         run: |
           sudo apt update &> /dev/null
-          sudo apt -y install curl python3 wget aria2 megatools &> /dev/null
-          curl -sS https://raw.githubusercontent.com/crazystylus/otadump/mainline/install.sh | bash
+          sudo apt -y install curl python3 wget aria2 &> /dev/null
           git config --global user.name "bot"
           git config --global user.email ""
           git config --global advice.refSyntax false
-          git clone -b test https://github.com/zainarbani/dumpyara.git dumpyara &> /dev/null
-          cd dumpyara
-          chmod +x setup.sh && chmod +x dumpyara.sh
-          ORGH=${{github.event.inputs.GITHUB_ORG}}
-          sed -i "s|ORG=AndroidDumps|ORG=$ORGH|g" dumpyara.sh
-          bash setup.sh &> /dev/null
       - name: Download & Dump ROM
         run: |
-          cd dumpyara
-          #megadl --version
-          wget http://bashupload.com/DTTzx/megatools
-          chmod +x megatools
-          ./megatools dl "https://mega.nz/folder/TQ5WDJ7S#jzLWHRAAppTxnysPYvWEOQ/file/PYZT1BAZ"
-          mv super.bin super.img
-          7z a tm.7z super.img
-          #aria2c -o hhh.rar https://projects.umidigi.com/download/2024_12_25_09_41_23/UMIDIGI_Note_90C_V1.0_20241219_user.rar
-          curl bashupload.com -T tm.7z
-          filen=$(7z l -ba tm.7z | grep -vF 'D....' | grep -oP '\S+$')
-          #7z rn tm.7z $filen super.img
-          #aria2c -j 16 -o rom.zip "${{github.event.inputs.ROM_URL}}"
-          #curl 'https://file9.gofile.io/download/web/fad9caf2-badf-435d-8042-5a6c392c2ecf/EternityROM_v4.0_OneUI_6.1.1.zip' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br, zstd' -H 'Referer: https://gofile.io/' -H 'Connection: keep-alive' -H 'Cookie: accountToken=RoFXZcfMDMHO2CQ0WU3iEdkG1TX5vsPo' -H 'Upgrade-Insecure-Requests: 1' -H 'Sec-Fetch-Dest: document' -H 'Sec-Fetch-Mode: navigate' -H 'Sec-Fetch-Site: same-site' -H 'Sec-Fetch-User: ?1' -H 'Priority: u=0, i' --output rom.zip
-          7z l rom.zip
-          filen=$(7z l -ba rom.zip | grep -vF 'D....' | grep -oP '\S+$')
-          7z rn rom.zip $filen system.img
-          7z rn rom.zip images/system.new.dat.br system.new.dat.br
-          7z rn rom.zip images/system.patch.dat system.patch.dat
-          7z rn rom.zip images/system.transfer.list system.transfer.list
-          7z rn rom.zip images/product.new.dat.br product.new.dat.br
-          7z rn rom.zip images/product.patch.dat product.patch.dat
-          7z rn rom.zip images/product.transfer.list product.transfer.list
-          bash dumpyara.sh tm.7z $GH_TOKEN
-        env:
-          GH_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+          aria2c -o fw.tgz "https://cdnorg.d.miui.com/OS3.0.302.0.WONCNXM/dali_images_OS3.0.302.0.WONCNXM_20260507.0000.00_16.0_cn_b905b32c3a.tgz"
+          #curl bashupload.com -T tm.7z
+          tar -tf fw.tgz
+          
