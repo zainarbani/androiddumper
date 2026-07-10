@@ -28,7 +28,7 @@ jobs:
           git config --global advice.refSyntax false
       - name: Download & Dump ROM
         run: |
-          aria2c -o fw.tgz "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.3.0.WMCCNXM/_20260126.0000.00_16.0_cn_1fa0cd861e.tgz"
+          aria2c -o fw.tgz "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.3.0.WMCCNXM/fuxi_images_OS3.0.3.0.WMCCNXM_20260126.0000.00_16.0_cn_1fa0cd861e.tgz"
           #curl bashupload.com -T tm.7z
           tar -zxvf fw.tgz fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/boot.img fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/vendor_boot.img
           tar -cvf boot_fuxi.tar -C fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/ boot.img vendor_boot.img
