@@ -32,6 +32,20 @@ jobs:
           tar -zxvf fw.tgz fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/boot.img fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/vendor_boot.img
           tar -cvf boot_fuxi.tar -C fuxi_images_OS3.0.3.0.WMCCNXM_16.0/images/ boot.img vendor_boot.img
           #curl bashupload.app -T boot_fuxi.tar
-          curl -F 'file=@boot_fuxi.tar' https://0x0.st
-          
+          #curl -F 'file=@boot_fuxi.tar' https://0x0.st
+      - name: Generate Release
+        run: |
+          {
+            echo "**fuxi_images_OS3.0.3.0.WMCCNXM_16.0**"
+            echo "---"
+          } > release.md
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: boot_fuxi.tar
+          name: boot_fuxi
+          tag_name: fuxi_images_OS3.0.3.0.WMCCNXM_16.0
+          body_path: release.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
